@@ -1,0 +1,19 @@
+{
+  "name": "react-native-step-tutorial",
+  "version": "1.0.1",
+  "description": "A lightweight and customizable React Native tutorial/onboarding overlay library that guides users through your app’s UI using step-by-step highlights, tooltips, and walkthroughs. Easily define tutorial steps, highlight specific components, and provide contextual guidance to improve user onboarding and feature discovery.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pritamramteke3211/react-native-step-tutorial"
+  },
+  "author": "Pritam Ramteke",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "18.3.1",
+    "react-native": "0.75.4"
+  }
+}

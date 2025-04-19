@@ -1,6 +1,5 @@
-import {useRef, useState} from 'react';
-import {View} from 'react-native';
-import {TutorialStep} from './types';
+import { useRef, useState } from "react";
+import { View, ViewStyle } from "react-native";
 
 type Layout = {
   x: number;
@@ -9,7 +8,13 @@ type Layout = {
   height: number;
 };
 
-export const useTutorial = () => {
+type TutorialStep = {
+  description: string;
+  layout?: ViewStyle;
+  renderHighlight?: (layout: ViewStyle) => JSX.Element;
+};
+
+const useTutorial = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [visible, setVisible] = useState(true);
   const stepRefs = useRef<Array<View | null>>([]);
@@ -19,15 +24,15 @@ export const useTutorial = () => {
   const handleLayout = () => {
     Promise.all(
       stepRefs.current.map(
-        ref =>
-          new Promise<Layout>(resolve => {
+        (ref) =>
+          new Promise<Layout>((resolve) => {
             ref?.measureInWindow?.((x, y, width, height) =>
-              resolve({x, y, width, height}),
+              resolve({ x, y, width, height })
             );
-          }),
-      ),
-    ).then(positions => {
-      console.log('positions', positions);
+          })
+      )
+    ).then((positions) => {
+      console.log("positions", positions);
       const updatedSteps = steps.map((step, index) => ({
         ...step,
         layout: {
@@ -52,3 +57,5 @@ export const useTutorial = () => {
     handleLayout,
   };
 };
+
+export default useTutorial;
