@@ -1,6 +1,6 @@
 {
   "name": "react-native-step-tutorial",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A lightweight and customizable React Native tutorial/onboarding overlay library that guides users through your app’s UI using step-by-step highlights, tooltips, and walkthroughs. Easily define tutorial steps, highlight specific components, and provide contextual guidance to improve user onboarding and feature discovery.",
   "main": "index.ts",
   "scripts": {

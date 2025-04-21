@@ -20,6 +20,8 @@ A lightweight and customizable React Native tutorial/onboarding library that wal
 
 ---
 
+![This is a Preview.](/rnstDemoGif.gif "\\This is a Preview.")
+
 ## 📦 Installation
 
 ```bash
