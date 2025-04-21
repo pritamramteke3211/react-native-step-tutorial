@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { View, ViewStyle } from "react-native";
 
 type Layout = {
@@ -14,12 +14,20 @@ type TutorialStep = {
   renderHighlight?: (layout: ViewStyle) => JSX.Element;
 };
 
-const useTutorial = () => {
+const useTutorial = (tutSteps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [visible, setVisible] = useState(true);
   const stepRefs = useRef<Array<View | null>>([]);
 
   const [steps, setSteps] = useState<TutorialStep[]>([]);
+
+  useEffect(() => {
+    if (steps.length === 0) {
+      setSteps(tutSteps);
+    } else if (visible) {
+      restartTutorial();
+    }
+  }, [visible]);
 
   const handleLayout = () => {
     Promise.all(
@@ -32,7 +40,6 @@ const useTutorial = () => {
           })
       )
     ).then((positions) => {
-      console.log("positions", positions);
       const updatedSteps = steps.map((step, index) => ({
         ...step,
         layout: {
@@ -46,15 +53,21 @@ const useTutorial = () => {
     });
   };
 
+  const restartTutorial = () => {
+    handleLayout();
+    setCurrentStep(0);
+    setVisible(true);
+  };
+
   return {
     stepRefs,
     steps,
-    setSteps,
     currentStep,
     setCurrentStep,
     visible,
     setVisible,
     handleLayout,
+    restartTutorial,
   };
 };
 

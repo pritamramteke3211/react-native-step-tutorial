@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ViewStyle,
+  Dimensions,
 } from "react-native";
+import { initialWindowMetrics } from "react-native-safe-area-context";
+
+const insets = initialWindowMetrics?.insets;
+
+const { width: scrn_width, height: scrn_height } = Dimensions.get("window");
+
+const safe_top = insets?.top;
+const safe_bottom = insets?.bottom;
 
 type TutorialStep = {
   description: string;
@@ -30,13 +39,26 @@ export const TutorialOverlay: React.FC<Props> = ({
   onNext,
   onDone,
 }) => {
+  const [msgBoxPos, setmsgBoxPos] = useState(0);
+
+  const contTutDis = 10;
+
   if (!visible || !steps[currentStep]?.layout) {
     return null;
   }
 
   const { layout, description, renderHighlight } = steps[currentStep];
 
-  console.log("layout", layout);
+  const safeHeight = scrn_height;
+  -(safe_top + safe_bottom);
+
+  const cItmLay = layout.top + layout.height;
+
+  const handleMessageBoxLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+
+    setmsgBoxPos(height);
+  };
 
   return (
     <View style={StyleSheet.absoluteFill}>
@@ -45,7 +67,22 @@ export const TutorialOverlay: React.FC<Props> = ({
       {renderHighlight?.({ ...layout, margin: 0 })}
 
       {/* Instruction + Controls */}
-      <View style={styles.whiteboard}>
+      <View
+        onLayout={handleMessageBoxLayout}
+        style={[
+          styles.whiteboard,
+          layout.left < scrn_width / 2
+            ? { left: layout.left }
+            : { right: scrn_width - layout.left - layout.width },
+          layout.top + msgBoxPos + contTutDis < safeHeight
+            ? {
+                top: cItmLay + contTutDis,
+              }
+            : {
+                top: layout.top - msgBoxPos - contTutDis,
+              },
+        ]}
+      >
         <Text style={styles.description}>{description}</Text>
         <View style={styles.controls}>
           <TouchableOpacity
@@ -65,12 +102,46 @@ export const TutorialOverlay: React.FC<Props> = ({
             </TouchableOpacity>
           )}
         </View>
+        <View
+          style={[
+            styles.arrInd,
+            layout.left < scrn_width / 2
+              ? {
+                  left: 10,
+                }
+              : {
+                  right: 10,
+                },
+
+            layout.top + msgBoxPos + contTutDis < safeHeight
+              ? {
+                  borderBottomWidth: contTutDis / 1.4,
+                  borderBottomColor: "#fff",
+                  top: -contTutDis / 1.4,
+                }
+              : {
+                  borderTopWidth: contTutDis / 1.4,
+                  borderTopColor: "#fff",
+                  bottom: -contTutDis / 1.4,
+                },
+          ]}
+        />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  arrInd: {
+    width: 0,
+    height: 0,
+    backgroundColor: "transparent",
+    borderLeftWidth: 8,
+    borderRightWidth: 8,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    position: "absolute",
+  },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0,0,0,0.7)",
@@ -78,16 +149,9 @@ const styles = StyleSheet.create({
 
   whiteboard: {
     position: "absolute",
-    bottom: 30,
-    left: 20,
-    right: 20,
     backgroundColor: "#fff",
     padding: 16,
     borderRadius: 12,
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 4 },
   },
   description: {
     fontSize: 16,
@@ -97,6 +161,7 @@ const styles = StyleSheet.create({
   controls: {
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: 10,
   },
   button: {
     paddingVertical: 8,
