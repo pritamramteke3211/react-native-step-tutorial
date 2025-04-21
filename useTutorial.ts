@@ -35,10 +35,10 @@ const useTutorial = (tutSteps) => {
         (ref) =>
           new Promise<Layout>((resolve) => {
             ref?.measureInWindow?.((x, y, width, height) =>
-              resolve({ x, y, width, height })
+              resolve({ x, y, width, height }),
             );
-          })
-      )
+          }),
+      ),
     ).then((positions) => {
       const updatedSteps = steps.map((step, index) => ({
         ...step,

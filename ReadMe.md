@@ -4,6 +4,8 @@ A lightweight and customizable React Native tutorial/onboarding library that wal
 
 ---
 
+![This is a Preview.](/rnstDemoGif.gif "\\This is a Preview.")
+
 ## ✨ Features
 
 - 🔍 Highlight any component with smooth overlays
@@ -19,8 +21,6 @@ A lightweight and customizable React Native tutorial/onboarding library that wal
 - 📱 Built with `react-native` — no native modules required
 
 ---
-
-![This is a Preview.](/rnstDemoGif.gif "\\This is a Preview.")
 
 ## 📦 Installation
 
