@@ -12,6 +12,8 @@ A lightweight and customizable React Native tutorial/onboarding library that wal
 
 - ⏭️ Next, Previous, and Done controls
 
+- 🔄 Restart Tutorial Anytime with a single function call
+
 - 💡 Simple API using React Hooks
 
 - 📱 Built with `react-native` — no native modules required
@@ -37,109 +39,169 @@ yarn add react-native-tutorial-overlay
 Here's a complete example showing how to implement the tutorial overlay:
 
 ```jsx
-import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useTutorial, TutorialOverlay } from "react-native-tutorial-overlay";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
+import { TutorialOverlay, useTutorial } from "react-native-step-tutorial";
 
 const Example = () => {
+  const tutLis = [
+    {
+      description: "This is your profile icon!",
+      renderHighlight: (layout) => (
+        <TouchableOpacity style={{ ...styles.profileIcm, ...layout }}>
+          <Text style={styles.tabTxt}>👤</Text>
+        </TouchableOpacity>
+      ),
+    },
+    {
+      description: "Check your notifications here!",
+      renderHighlight: (layout) => (
+        <TouchableOpacity
+          style={{
+            ...styles.tabCont,
+            ...layout,
+          }}
+        >
+          <Text style={styles.tabTxt}>🔔 Notifications</Text>
+        </TouchableOpacity>
+      ),
+    },
+    {
+      description: "Change your settings here!",
+      renderHighlight: (layout) => (
+        <TouchableOpacity
+          style={{
+            ...styles.tabCont,
+            ...layout,
+          }}
+        >
+          <Text style={styles.tabTxt}>⚙️ Settings</Text>
+        </TouchableOpacity>
+      ),
+    },
+    {
+      description: "Send an SMS here!",
+      renderHighlight: (layout) => (
+        <TouchableOpacity
+          style={{
+            ...styles.tabCont,
+            ...layout,
+          }}
+        >
+          <Text style={styles.tabTxt}>💬 SMS</Text>
+        </TouchableOpacity>
+      ),
+    },
+
+    {
+      description: "Open Home!",
+      renderHighlight: (layout) => (
+        <Text
+          style={{ ...styles.tabTxt, ...layout }}
+          ref={(ref) => (stepRefs.current[4] = ref)}
+        >
+          🏠
+        </Text>
+      ),
+    },
+    {
+      description: "Open Search!",
+      renderHighlight: (layout) => (
+        <Text
+          style={{ ...styles.tabTxt, ...layout }}
+          ref={(ref) => (stepRefs.current[4] = ref)}
+        >
+          🔍
+        </Text>
+      ),
+    },
+    {
+      description: "Open Camera!",
+      renderHighlight: (layout) => (
+        <Text
+          style={{ ...styles.tabTxt, ...layout }}
+          ref={(ref) => (stepRefs.current[4] = ref)}
+        >
+          📷
+        </Text>
+      ),
+    },
+    {
+      description: "Open Orders!",
+      renderHighlight: (layout) => (
+        <Text
+          style={{ ...styles.tabTxt, ...layout }}
+          ref={(ref) => (stepRefs.current[4] = ref)}
+        >
+          📦
+        </Text>
+      ),
+    },
+  ];
+
   const {
     stepRefs,
     steps,
-    setSteps,
     currentStep,
     setCurrentStep,
     visible,
     setVisible,
     handleLayout,
-  } = useTutorial();
+    restartTutorial,
+  } = useTutorial(tutLis);
 
-  useEffect(() => {
-    setSteps([
-      {
-        description: "This is your profile icon!",
-        renderHighlight: (layout) => (
+  return (
+    <View style={{ ...styles.cont }} onLayout={handleLayout}>
+      <View style={{ ...styles.cont, padding: 10 }}>
+        <TouchableOpacity
+          style={styles.profileIcm}
+          ref={(ref) => (stepRefs.current[0] = ref)}
+        >
+          <Text style={styles.tabTxt}>👤</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.tabCont}
+          ref={(ref) => (stepRefs.current[1] = ref)}
+        >
+          <Text style={styles.tabTxt}>🔔 Notifications</Text>
+        </TouchableOpacity>
+
+        <View style={styles.subCont}>
           <TouchableOpacity
-            style={{
-              ...styles.tabCont,
-              ...layout,
-            }}
-          >
-            <Text style={styles.tabTxt}>👤 Profile</Text>
-          </TouchableOpacity>
-        ),
-      },
-      {
-        description: "Check your notifications here!",
-        renderHighlight: (layout) => (
-          <TouchableOpacity
-            style={{
-              ...styles.tabCont,
-              ...layout,
-            }}
-          >
-            <Text style={styles.tabTxt}>🔔 Notifications</Text>
-          </TouchableOpacity>
-        ),
-      },
-      {
-        description: "Change your settings here!",
-        renderHighlight: (layout) => (
-          <TouchableOpacity
-            style={{
-              ...styles.tabCont,
-              ...layout,
-            }}
+            style={styles.tabCont}
+            ref={(ref) => (stepRefs.current[2] = ref)}
           >
             <Text style={styles.tabTxt}>⚙️ Settings</Text>
           </TouchableOpacity>
-        ),
-      },
-      {
-        description: "Send an SMS here!",
-        renderHighlight: (layout) => (
           <TouchableOpacity
-            style={{
-              ...styles.tabCont,
-              ...layout,
-            }}
+            style={styles.tabCont}
+            ref={(ref) => (stepRefs.current[3] = ref)}
           >
             <Text style={styles.tabTxt}>💬 SMS</Text>
           </TouchableOpacity>
-        ),
-      },
-    ]);
-  }, [setSteps]);
+        </View>
 
-  return (
-    <View style={styles.cont} onLayout={handleLayout}>
-      <TouchableOpacity
-        style={styles.tabCont}
-        ref={(ref) => (stepRefs.current[0] = ref)}
-      >
-        <Text style={styles.tabTxt}>👤 Profile</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.tabCont}
-        ref={(ref) => (stepRefs.current[1] = ref)}
-      >
-        <Text style={styles.tabTxt}>🔔 Notifications</Text>
-      </TouchableOpacity>
-
-      <View style={styles.subCont}>
-        <TouchableOpacity
-          style={styles.tabCont}
-          ref={(ref) => (stepRefs.current[2] = ref)}
-        >
-          <Text style={styles.tabTxt}>⚙️ Settings</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.tabCont}
-          ref={(ref) => (stepRefs.current[3] = ref)}
-        >
-          <Text style={styles.tabTxt}>💬 SMS</Text>
-        </TouchableOpacity>
+        <Button title="Restart Tutorial" onPress={restartTutorial} />
       </View>
+      <TouchableOpacity
+        style={styles.btmNav}
+        //    ref={ref => (stepRefs.current[4] = ref)}
+      >
+        <Text style={styles.tabTxt} ref={(ref) => (stepRefs.current[4] = ref)}>
+          🏠
+        </Text>
+        <Text style={styles.tabTxt} ref={(ref) => (stepRefs.current[5] = ref)}>
+          🔍
+        </Text>
+
+        <Text style={styles.tabTxt} ref={(ref) => (stepRefs.current[6] = ref)}>
+          📷
+        </Text>
+        <Text style={styles.tabTxt} ref={(ref) => (stepRefs.current[7] = ref)}>
+          📦
+        </Text>
+      </TouchableOpacity>
 
       <TutorialOverlay
         steps={steps}
@@ -156,6 +218,24 @@ const Example = () => {
 export default Example;
 
 const styles = StyleSheet.create({
+  btmNav: {
+    position: "absolute",
+    bottom: 0,
+    padding: 10,
+    backgroundColor: "#0ad37f",
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  profileIcm: {
+    backgroundColor: "#f0e330",
+    padding: 10,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 60,
+    aspectRatio: 1,
+  },
   subCont: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -167,7 +247,6 @@ const styles = StyleSheet.create({
   },
   cont: {
     flex: 1,
-    padding: 10,
     gap: 10,
   },
   tabCont: {
