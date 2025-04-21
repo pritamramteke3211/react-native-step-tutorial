@@ -1,4 +1,4 @@
-# 🧠 React Native Tutorial Overlay
+# 🧠 React Native Step Tutorial
 
 A lightweight and customizable React Native tutorial/onboarding library that walks users through your app using step-by-step highlights and contextual tooltips. Perfect for onboarding flows, feature introductions, and guiding users through complex UIs.
 
@@ -270,3 +270,7 @@ const styles = StyleSheet.create({
 4. **`TutorialOverlay`**: The component that renders the tutorial interface
 
 5. **Navigation controls**: Implement `onPrev`, `onNext`, and `onDone` handlers
+
+## 🗣️ Feedback & Support
+
+Found a bug or have a feature request? Please open an issue on [GitHub](https://github.com/pritamramteke3211/react-native-step-tutorial/issues).
