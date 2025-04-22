@@ -4,7 +4,9 @@ A lightweight and customizable React Native tutorial/onboarding library that wal
 
 ---
 
-![This is a Preview.](/rnstDemoGif.gif "\\This is a Preview.")
+<!-- ![This is a Preview.](/rnstDemoGif.gif "\\This is a Preview.") -->
+
+![This is a Preview.](https://i.imgur.com/3v6AGAi.gif "This is a Preview.")
 
 ## ✨ Features
 
